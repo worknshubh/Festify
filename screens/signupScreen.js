@@ -15,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import Primarybtn from '../components/primarybtn';
 
-const Login = () => {
+const Signup = () => {
   const [selected, setSelected] = useState('');
   return (
     <SafeAreaView>
@@ -33,39 +33,60 @@ const Login = () => {
               color: primary_text_color,
               fontFamily: 'Lato-Regular',
             }}>
-            Your events await. Log in to jump in!
+            Start fresh. Start planning.
           </Text>
         </View>
         <View style={{alignItems: 'flex-end', position: 'relative', top: -140}}>
           <Text
             style={{
-              fontSize: 40,
+              fontSize: 30,
               width: wp('30%'),
               color: primary_text_color,
               fontFamily: 'Lato-Light',
             }}>
-            Back in action? Let’s go!
+            Sign up, show up, glow up
           </Text>
         </View>
       </View>
       <View style={styles.loginarea}>
         <TextInput
+          placeholder="Enter your Name"
+          style={styles.logintext}></TextInput>
+        <TextInput
           placeholder="Enter your Email"
+          style={styles.logintext}></TextInput>
+        <TextInput
+          placeholder="Enter your University Name"
           style={styles.logintext}></TextInput>
         <TextInput
           placeholder="Enter your Password"
           style={styles.logintext}></TextInput>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderColor: primary_text_color,
+            marginHorizontal: 40,
+            marginVertical: 5,
+          }}>
+          <Picker
+            selectedValue={selected}
+            onValueChange={itemValue => setSelected(itemValue)}
+            style={{}}>
+            <Picker.Item label="Participant" value="Participant"></Picker.Item>
+            <Picker.Item label="Organizer" value="Organizer"></Picker.Item>
+          </Picker>
+        </View>
 
         <View
           style={{
             flexDirection: 'row',
             paddingHorizontal: 43,
           }}>
-          <Text style={styles.redirect_text}>Don't have an account?</Text>
-          <Text style={styles.redirect_text}>Sign up</Text>
+          <Text style={styles.redirect_text}>Already have an account?</Text>
+          <Text style={styles.redirect_text}>LogIn</Text>
         </View>
         <View style={{marginTop: hp('4%')}}>
-          <Primarybtn name="Login Now"></Primarybtn>
+          <Primarybtn name="Signup Now"></Primarybtn>
         </View>
       </View>
 
@@ -81,24 +102,24 @@ const Login = () => {
         <View style={{}}>
           <Text
             style={{
-              fontSize: 27,
-              width: wp('28%'),
+              fontSize: 28,
+              width: wp('32%'),
               color: primary_text_color,
               fontFamily: 'Lato-Regular',
             }}>
-            Reunited with your plans
+            Start organizing like a pro.
           </Text>
         </View>
         <View style={{alignItems: 'flex-end'}}>
           <Text
             style={{
-              fontSize: 32,
+              fontSize: 28,
               width: wp('30%'),
               color: primary_text_color,
-              textAlign: 'center',
+              textAlign: 'right',
               fontFamily: 'Lato-Regular',
             }}>
-            Time to make some noise again!
+            Create your account. Create the vibe
           </Text>
         </View>
       </View>
@@ -138,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;
