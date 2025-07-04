@@ -5,7 +5,7 @@ import primary_text_color from '../defaults';
 const Primarybtn = props => {
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <TouchableOpacity style={styles.background}>
+      <TouchableOpacity style={styles.background} onPress={props.redirect}>
         <Text style={{color: 'white', fontSize: 22, textAlign: 'center'}}>
           {props.name}
         </Text>

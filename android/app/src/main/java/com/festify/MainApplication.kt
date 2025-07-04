@@ -1,4 +1,4 @@
-package com.festify
+package com.shubham.festify
 
 import android.app.Application
 import com.facebook.react.PackageList

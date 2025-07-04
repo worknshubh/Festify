@@ -1,6 +1,21 @@
-pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
-plugins { id("com.facebook.react.settings") }
-extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+pluginManagement {
+    repositories {
+        google()                 // 🔥 Required to fetch Firebase plugin
+        gradlePluginPortal()     // For standard Gradle plugins
+        mavenCentral()
+    }
+    includeBuild("../node_modules/@react-native/gradle-plugin")
+}
+
+plugins {
+    id("com.facebook.react.settings")
+}
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) {
+    ex -> ex.autolinkLibrariesFromCommand()
+}
+
 rootProject.name = 'festify'
 include ':app'
+
 includeBuild('../node_modules/@react-native/gradle-plugin')

@@ -1,4 +1,4 @@
-package com.festify
+package com.shubham.festify
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

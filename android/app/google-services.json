@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "183270248807",
+    "project_id": "festify-2a107",
+    "storage_bucket": "festify-2a107.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183270248807:android:42a55d09a87e7b82f95fc2",
+        "android_client_info": {
+          "package_name": "com.shubham.festify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUPSoGKBS-BPkl9nWXSPj99HPXxxAcZIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

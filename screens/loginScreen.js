@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -6,17 +6,52 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import primary_text_color from '../defaults';
 import {Picker} from '@react-native-picker/picker';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Primarybtn from '../components/primarybtn';
+import {UserContext} from '../App';
+const Login = ({navigation}) => {
+  const [useremail, setUseremail] = useState('');
+  const [userpass, setUserpass] = useState('');
+  const {userdata, setUserdata} = useContext(UserContext);
+  useEffect(() => {
+    if (auth().currentUser) {
+      navigation.replace('DrawerMenu');
+    }
+  }, []);
 
-const Login = () => {
-  const [selected, setSelected] = useState('');
+  function redirecttosignup() {
+    navigation.replace('SignupScreen');
+  }
+  function redirecttoscreen() {
+    auth()
+      .signInWithEmailAndPassword(useremail, userpass)
+      .then(() => {
+        const uid = auth().currentUser.uid;
+        firestore()
+          .collection('users')
+          .where('uid', '==', uid)
+          .get()
+          .then(snapshot => {
+            if (!snapshot.empty) {
+              setUserdata(snapshot.docs[0].data());
+            }
+          });
+        navigation.replace('DrawerMenu');
+      })
+      .catch(() => {
+        Alert.alert('No user found');
+      });
+  }
   return (
     <SafeAreaView>
       <View style={styles.logobox}>
@@ -51,21 +86,30 @@ const Login = () => {
       <View style={styles.loginarea}>
         <TextInput
           placeholder="Enter your Email"
-          style={styles.logintext}></TextInput>
+          style={styles.logintext}
+          value={useremail}
+          onChangeText={text => {
+            setUseremail(text);
+          }}></TextInput>
         <TextInput
           placeholder="Enter your Password"
-          style={styles.logintext}></TextInput>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 43,
-          }}>
-          <Text style={styles.redirect_text}>Don't have an account?</Text>
-          <Text style={styles.redirect_text}>Sign up</Text>
-        </View>
+          style={styles.logintext}
+          value={userpass}
+          onChangeText={text => {
+            setUserpass(text);
+          }}></TextInput>
+        <TouchableOpacity onPress={redirecttosignup}>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 43,
+            }}>
+            <Text style={styles.redirect_text}>Don't have an account?</Text>
+            <Text style={styles.redirect_text}>Sign up</Text>
+          </View>
+        </TouchableOpacity>
         <View style={{marginTop: hp('4%')}}>
-          <Primarybtn name="Login Now"></Primarybtn>
+          <Primarybtn name="Login Now" redirect={redirecttoscreen}></Primarybtn>
         </View>
       </View>
 

@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import primary_text_color from '../defaults';
 import {Picker} from '@react-native-picker/picker';
@@ -14,9 +15,39 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Primarybtn from '../components/primarybtn';
-
-const Signup = () => {
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+const Signup = ({navigation}) => {
   const [selected, setSelected] = useState('');
+  const [username, setUsername] = useState('');
+  const [useremail, setUseremail] = useState('');
+  const [userpass, setUserpass] = useState('');
+  const [userinstitute, setUserinstitute] = useState('');
+
+  function redirecttonextscreen() {
+    auth()
+      .createUserWithEmailAndPassword(useremail, userpass)
+      .then(user => {
+        firestore().collection('users').doc(user.user.uid).set({
+          username: username,
+          useremail: useremail,
+          userinstitute: userinstitute,
+          role: selected,
+          uid: auth().currentUser.uid,
+          events_applied: [],
+          profile_pic: '',
+        });
+      })
+      .then(navigation.replace('LoginScreen'))
+      .catch(error => {
+        console.log('Signup error:', error);
+        alert(error.message);
+      });
+  }
+
+  function redirecttologin() {
+    navigation.replace('LoginScreen');
+  }
   return (
     <SafeAreaView>
       <View style={styles.logobox}>
@@ -51,16 +82,49 @@ const Signup = () => {
       <View style={styles.loginarea}>
         <TextInput
           placeholder="Enter your Name"
-          style={styles.logintext}></TextInput>
+          style={styles.logintext}
+          value={username}
+          onChangeText={text => {
+            setUsername(text);
+          }}></TextInput>
         <TextInput
           placeholder="Enter your Email"
-          style={styles.logintext}></TextInput>
-        <TextInput
-          placeholder="Enter your University Name"
-          style={styles.logintext}></TextInput>
+          style={styles.logintext}
+          value={useremail}
+          onChangeText={text => {
+            setUseremail(text);
+          }}></TextInput>
         <TextInput
           placeholder="Enter your Password"
-          style={styles.logintext}></TextInput>
+          style={styles.logintext}
+          value={userpass}
+          onChangeText={text => {
+            setUserpass(text);
+          }}></TextInput>
+        <View
+          style={{
+            marginHorizontal: 40,
+            borderBottomWidth: 1,
+            borderColor: primary_text_color,
+            marginBottom: 20,
+          }}>
+          <Picker
+            selectedValue={userinstitute}
+            onValueChange={value => {
+              setUserinstitute(value);
+            }}>
+            <Picker.Item label="Select University" value=""></Picker.Item>
+            <Picker.Item
+              label="Institute of Engineering and Management"
+              value="Institute of Engineering and Management"></Picker.Item>
+            <Picker.Item
+              label="Techno India University"
+              value="Techno India University"></Picker.Item>
+            <Picker.Item
+              label="Brainware University"
+              value="Brainware University"></Picker.Item>
+          </Picker>
+        </View>
         <View
           style={{
             borderBottomWidth: 1,
@@ -72,21 +136,25 @@ const Signup = () => {
             selectedValue={selected}
             onValueChange={itemValue => setSelected(itemValue)}
             style={{}}>
+            <Picker.Item label="Select role" value=""></Picker.Item>
             <Picker.Item label="Participant" value="Participant"></Picker.Item>
             <Picker.Item label="Organizer" value="Organizer"></Picker.Item>
           </Picker>
         </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingHorizontal: 43,
-          }}>
-          <Text style={styles.redirect_text}>Already have an account?</Text>
-          <Text style={styles.redirect_text}>LogIn</Text>
-        </View>
+        <TouchableOpacity onPress={redirecttologin}>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 43,
+            }}>
+            <Text style={styles.redirect_text}>Already have an account?</Text>
+            <Text style={styles.redirect_text}>LogIn</Text>
+          </View>
+        </TouchableOpacity>
         <View style={{marginTop: hp('4%')}}>
-          <Primarybtn name="Signup Now"></Primarybtn>
+          <Primarybtn
+            name="Signup Now"
+            redirect={redirecttonextscreen}></Primarybtn>
         </View>
       </View>
 
